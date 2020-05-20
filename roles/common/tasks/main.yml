@@ -1,0 +1,16 @@
+---
+- name: Run package upgrades
+  apt:
+    update_cache: yes
+    autoclean: yes
+    autoremove: yes
+    upgrade: safe
+
+- name: Install basic tools
+  apt:
+    pkg:
+    - unattended-upgrades
+    - htop
+    - vim
+    - rsync
+

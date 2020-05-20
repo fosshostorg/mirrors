@@ -1,0 +1,35 @@
+#!/bin/bash
+
+# grabbed from
+# https://gitlab.manjaro.org/tools/maintenance-tools/boxit/-/blob/32bffb3f8e26969ee16f66c0bd32e820f3d53763/manjaroreposync
+# This script should be a cronjob and should be run a few times a day. (example for /etc/crontab: "0  *  *  *  * root /usr/bin/manjaroreposync").
+# However you can also move this script to "/etc/cron.hourly".
+# To be an official Manjaro Linux mirror and to get access to our rsync server, you have to tell us your static ip of your synchronization server.
+
+DESTPATH="/srv/mirror/manjaro"
+RSYNC=/usr/bin/rsync
+LOCKFILE=/tmp/rsync-manjaro.lock
+
+synchronize() {
+    $RSYNC -rtlvH --delete-after --delay-updates --safe-links rsync://repo.manjaro.org/repos "$DESTPATH"
+}
+
+if [ ! -e "$LOCKFILE" ]
+then
+    echo $$ >"$LOCKFILE"
+    synchronize
+else
+    PID=$(cat "$LOCKFILE")
+    if kill -0 "$PID" >&/dev/null
+    then
+        echo "Rsync - Synchronization still running"
+        exit 0
+    else
+        echo $$ >"$LOCKFILE"
+        echo "Warning: previous synchronization appears not to have finished correctly"
+        synchronize
+    fi
+fi
+
+rm -f "$LOCKFILE"
+

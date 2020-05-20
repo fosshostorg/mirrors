@@ -4,6 +4,12 @@
     name: nginx
     state: present
 
+- name: Create mirror root directory
+  file:
+    path: /srv/mirror
+    state: directory
+    mode: 0755
+
 - name: Setup sites-enabled/mirror
   register: nginxconf
   copy:
@@ -14,6 +20,7 @@
       server {
         listen 80;
         server_name _;
+        root /srv/mirror;
 
         location / {
           try_files $uri $uri/ =404;

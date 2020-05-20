@@ -1,11 +1,10 @@
 ---
-- name: configure fosshost mirror
+- name: Configure fosshost mirrors
   hosts: all
   remote_user: root
 
   roles:
-    # - common
+    - common
     - nginx
-    # - rsync
-    # - reposync
+    - reposync
 
