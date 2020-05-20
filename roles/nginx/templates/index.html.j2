@@ -19,7 +19,7 @@
 
     <ul>
         {% for host in groups['all'] %}
-        <li><a href="http://{{ hostvars[host]['inventory_hostname'] }}">{{ hostvars[host]['inventory_hostname'] }}</a></li>
+        <li><a href="https://{{ hostvars[host]['inventory_hostname'] }}">{{ hostvars[host]['inventory_hostname'] }}</a></li>
         {% endfor %}
     </ul>
 
