@@ -1,5 +1,5 @@
 ---
-- name: install nginx and configure mirror cronjob
+- name: configure fosshost mirror
   hosts: all
   remote_user: root
 
