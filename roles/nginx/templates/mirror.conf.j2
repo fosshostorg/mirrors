@@ -9,19 +9,13 @@ server {
     }
 }
 
+# plain 80 for cert challenge
 server {
     listen 80;
-    listen 443 ssl;
     server_name {{ inventory_hostname }};
     root /srv/mirror;
-
-    include snippets/ssl.conf;
-    ssl_certificate /etc/letsencrypt/live/{{ inventory_hostname }}/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/{{ inventory_hostname }}/privkey.pem;
-
     location / {
         try_files $uri $uri/ =404;
-        autoindex on;
     }
 }
 

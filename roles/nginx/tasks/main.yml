@@ -10,6 +10,21 @@
     state: directory
     mode: 0755
 
+- name: Template http vhosts
+  template:
+    src: mirror.conf.j2
+    dest: /etc/nginx/sites-available/mirror
+
+- name: Symlink http vhosts
+  file:
+    src: /etc/nginx/sites-available/mirror
+    dest: /etc/nginx/sites-enabled/mirror
+    state: link
+  notify: nginx-reload
+
+- name: Start nginx
+  meta: flush_handlers
+
 - name: Request TLS cert with certbot
   command:
     creates: /etc/letsencrypt/live/{{ inventory_hostname }}/fullchain.pem
@@ -25,19 +40,19 @@
   copy:
     src: ssl.conf
     dest: /etc/nginx/snippets/ssl.conf
-
-- name: Template sites-available/mirror
-  register: nginxconf
-  template:
-    src: mirror.conf.j2
-    dest: /etc/nginx/sites-available/mirror
   notify: reload-nginx
 
-- name: Symlink nginx mirror config
+- name: Template https vhost
+  template:
+    src: mirror-ssl.conf.j2
+    dest: /etc/nginx/sites-available/mirror-ssl
+
+- name: Symlink https vhost
   file:
-    src: /etc/nginx/sites-available/mirror
-    dest: /etc/nginx/sites-enabled/mirror
+    src: /etc/nginx/sites-available/mirror-ssl
+    dest: /etc/nginx/sites-enabled/mirror-ssl
     state: link
+  notify: reload-nginx
 
 - name: Remove debian-packaged homepage
   file:

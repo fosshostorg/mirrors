@@ -15,3 +15,10 @@
     - rsync
     - certbot
 
+- name: Disable ssh password authentication
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^#?PasswordAuthentication'
+    line: PasswordAuthentication no
+  notify: restart-ssh
+
