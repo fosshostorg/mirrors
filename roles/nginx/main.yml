@@ -1,0 +1,34 @@
+---
+- name: Install nginx
+  apt:
+    name: nginx
+    state: present
+
+- name: Setup sites-enabled/mirror
+  register: nginxconf
+  copy:
+    dest: /etc/nginx/sites-enabled/mirror
+    content: |
+      # fosshost mirror config
+      # TODO: add ssl cert with certbot
+      server {
+        listen 80;
+        server_name _;
+
+        location / {
+          try_files $uri $uri/ =404;
+          autoindex on;
+        }
+      }
+
+- name: Remove default nginx site
+  file:
+    state: absent
+    path: /etc/nginx/sites-enabled/default
+
+- name: Restart nginx
+  when: nginxconf.changed
+  service:
+    name: nginx
+    state: reloaded
+

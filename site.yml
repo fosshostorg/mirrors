@@ -1,0 +1,11 @@
+---
+- name: install nginx and configure mirror cronjob
+  hosts: all
+  remote_user: root
+
+  roles:
+    # - common
+    - nginx
+    # - rsync
+    # - reposync
+
