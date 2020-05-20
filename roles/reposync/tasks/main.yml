@@ -1,7 +1,7 @@
 ---
 - name: Install manjaro sync script
   copy:
-    src: ../files/manjaroreposync
+    src: manjaroreposync
     dest: /usr/local/bin/mirror-manjaro
     mode: 0755
 

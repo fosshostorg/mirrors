@@ -12,21 +12,24 @@
 
 - name: Setup sites-enabled/mirror
   register: nginxconf
-  copy:
+  template:
+    src: mirror.conf.j2
     dest: /etc/nginx/sites-enabled/mirror
-    content: |
-      # fosshost mirror config
-      # TODO: add ssl cert with certbot
-      server {
-        listen 80;
-        server_name _;
-        root /srv/mirror;
 
-        location / {
-          try_files $uri $uri/ =404;
-          autoindex on;
-        }
-      }
+- name: Remove debian-packaged homepage
+  file:
+    state: absent
+    path: /var/www/html/index.nginx-debian.html
+
+- name: Install mirror homepage html
+  template:
+    src: index.html.j2
+    dest: /var/www/html/index.html
+
+- name: Install mirror homepage css
+  copy:
+    src: style.css
+    dest: /var/www/html/style.css
 
 - name: Remove default nginx site
   file:
