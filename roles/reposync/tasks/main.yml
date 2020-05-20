@@ -11,3 +11,9 @@
     state: directory
     mode: 0755
 
+- name: Add mirror cron entry
+  cron:
+    name: "sync manjaro mirrors"
+    hour: "*/4"
+    job: /usr/local/bin/mirror-manjaro
+
