@@ -10,11 +10,34 @@
     state: directory
     mode: 0755
 
-- name: Setup sites-enabled/mirror
+- name: Request TLS cert with certbot
+  command:
+    creates: /etc/letsencrypt/live/{{ inventory_hostname }}/fullchain.pem
+    cmd: certbot certonly --non-interactive --agree-tos --email admin@fosshost.org --webroot -w /srv/mirror -d {{ inventory_hostname }}
+
+- name: Enable certbot.timer
+  systemd:
+    name: certbot.timer
+    state: started
+    enabled: yes
+
+- name: Copy ssl.conf
+  copy:
+    src: ssl.conf
+    dest: /etc/nginx/snippets/ssl.conf
+
+- name: Template sites-available/mirror
   register: nginxconf
   template:
     src: mirror.conf.j2
+    dest: /etc/nginx/sites-available/mirror
+  notify: reload-nginx
+
+- name: Symlink nginx mirror config
+  file:
+    src: /etc/nginx/sites-available/mirror
     dest: /etc/nginx/sites-enabled/mirror
+    state: link
 
 - name: Remove debian-packaged homepage
   file:
@@ -35,10 +58,4 @@
   file:
     state: absent
     path: /etc/nginx/sites-enabled/default
-
-- name: Restart nginx
-  when: nginxconf.changed
-  service:
-    name: nginx
-    state: reloaded
 

@@ -13,5 +13,5 @@
     - htop
     - vim
     - rsync
-    - python3-certbot-nginx
+    - certbot
 
