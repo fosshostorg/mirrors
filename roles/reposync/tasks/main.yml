@@ -17,3 +17,24 @@
     hour: "*/4"
     job: /usr/local/bin/mirror-manjaro
 
+- name: Add xiph user
+  user:
+    name: xiph
+
+- name: Create xiph sync dir
+  file:
+    path: /srv/mirror/xiph
+    state: directory
+    mode: 0755
+    owner: xiph
+
+- name: Set up xiph ssh pubkey
+  authorized_key:
+    user: xiph
+    state: present
+    exclusive: True
+    key: '{{ item }}'
+    key_options: 'command="/usr/share/doc/rsync/scripts/rrsync /srv/mirror/xiph",no-agent-forwarding,no-port-forwarding,no-pty,no-user-rc,no-X11-forwarding'
+  with_file:
+    - xiph.pub
+
