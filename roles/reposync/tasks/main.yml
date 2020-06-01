@@ -41,7 +41,7 @@
     state: present
     exclusive: True
     key: '{{ item }}'
-    key_options: 'restrict,command="rrsync /srv/mirror/xiph"'
+    key_options: 'restrict,command="/usr/local/bin/rrsync /srv/mirror/xiph"'
   with_file:
     - xiph.pub
 
