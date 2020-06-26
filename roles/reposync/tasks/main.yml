@@ -1,4 +1,5 @@
 ---
+# manjaro mirror
 - name: Install manjaro sync script
   copy:
     src: manjaroreposync
@@ -11,12 +12,32 @@
     state: directory
     mode: 0755
 
-- name: Add mirror cron entry
+- name: Add manjaro mirror cron entry
   cron:
     name: "sync manjaro mirrors"
     hour: "*/4"
     job: /usr/local/bin/mirror-manjaro
 
+# ubuntudde mirror
+- name: Install ubuntudde sync script
+  copy:
+    src: ubuntuddereposync
+    dest: /usr/local/bin/mirror-ubuntudde
+    mode: 0755
+
+- name: Create ubuntudde sync dir
+  file:
+    path: /srv/mirror/ubuntudde
+    state: directory
+    mode: 0755
+
+- name: Add ubuntudde mirror cron entry
+  cron:
+    name: "sync ubuntudde mirrors"
+    hour: "*/4"
+    job: /usr/local/bin/mirror-ubuntudde
+
+# xiph mirror
 - name: Add xiph user
   user:
     name: xiph
