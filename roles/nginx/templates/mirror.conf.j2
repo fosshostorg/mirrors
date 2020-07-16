@@ -1,17 +1,6 @@
-server {
-    listen 80;
-    server_name mirror.fossho.st;
-    index index.html;
-    root /var/www/html;
-
-    location / {
-        try_files $uri $uri/ =404;
-    }
-}
-
 # plain 80 for cert challenge
 server {
-    listen 80;
+    listen 80 default_server;
     server_name {{ inventory_hostname }};
     root /srv/mirror;
     location / {

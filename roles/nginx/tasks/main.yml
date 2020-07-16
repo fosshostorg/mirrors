@@ -30,6 +30,12 @@
     creates: /etc/letsencrypt/live/{{ inventory_hostname }}/fullchain.pem
     cmd: certbot certonly --non-interactive --agree-tos --email admin@fosshost.org --webroot -w /srv/mirror -d {{ inventory_hostname }}
 
+- name: Request cert for landing page
+  command:
+    creates: /etc/letsencrypt/live/mirrors.fossho.st/fullchain.pem
+    cmd: certbot certonly --non-interactive --agree-tos --email admin@fosshost.org --webroot -w /var/www/html -d mirrors.fossho.st
+  when: landing_page is defined and landing_page == 'yes'
+
 - name: Enable certbot.timer
   systemd:
     name: certbot.timer
@@ -54,6 +60,20 @@
     state: link
   notify: reload-nginx
 
+- name: Copy https vhost for landing page
+  copy:
+    src: landing-page-ssl.conf
+    dest: /etc/nginx/sites-available/mirrors.fossho.st-ssl
+  when: landing_page is defined and landing_page == 'yes'
+
+- name: Symlink https vhost for landing page
+  file:
+    src: /etc/nginx/sites-available/mirrors.fossho.st-ssl
+    dest: /etc/nginx/sites-enabled/mirrors.fossho.st-ssl
+    state: link
+  when: landing_page is defined and landing_page == 'yes'
+  notify: reload-nginx
+
 - name: Remove debian-packaged homepage
   file:
     state: absent
@@ -63,11 +83,13 @@
   template:
     src: index.html.j2
     dest: /var/www/html/index.html
+  when: landing_page is defined and landing_page == 'yes'
 
 - name: Install mirror homepage css
   copy:
     src: style.css
     dest: /var/www/html/style.css
+  when: landing_page is defined and landing_page == 'yes'
 
 - name: Remove default nginx site
   file:
