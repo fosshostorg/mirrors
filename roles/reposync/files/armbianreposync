@@ -1,0 +1,29 @@
+#!/bin/bash
+
+DESTPATH="/srv/mirror/armbian"
+RSYNC=/usr/bin/rsync
+LOCKFILE=/tmp/rsync-armbian.lock
+
+synchronize() {
+    $RSYNC -rtlvH --delete-after --delay-updates --safe-links rsync://rsync.armbian.com/ "$DESTPATH"
+}
+
+if [ ! -e "$LOCKFILE" ]
+then
+    echo $$ >"$LOCKFILE"
+    synchronize
+else
+    PID=$(cat "$LOCKFILE")
+    if kill -0 "$PID" >&/dev/null
+    then
+        echo "rsync - synchronization still running"
+        exit 0
+    else
+        echo $$ >"$LOCKFILE"
+        echo "warning: previous synchronization appears not to have finished correctly"
+        synchronize
+    fi
+fi
+
+rm -f "$LOCKFILE"
+

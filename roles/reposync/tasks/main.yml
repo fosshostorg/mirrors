@@ -37,6 +37,25 @@
     hour: "*/4"
     job: /usr/local/bin/mirror-ubuntudde
 
+# armbian mirror
+- name: Install armbian sync script
+  copy:
+    src: armbianreposync
+    dest: /usr/local/bin/mirror-armbian
+    mode: 0755
+
+- name: Create armbian sync dir
+  file:
+    path: /srv/mirror/armbian
+    state: directory
+    mode: 0755
+
+- name: Add armbian mirror cron entry
+  cron:
+    name: "sync armbian mirrors"
+    hour: "*/4"
+    job: /usr/local/bin/mirror-armbian
+
 # xiph mirror
 - name: Add xiph user
   user:
