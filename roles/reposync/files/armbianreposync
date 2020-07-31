@@ -5,7 +5,8 @@ RSYNC=/usr/bin/rsync
 LOCKFILE=/tmp/rsync-armbian.lock
 
 synchronize() {
-    $RSYNC -rtlvH --delete-after --delay-updates --safe-links rsync://rsync.armbian.com/ "$DESTPATH"
+    $RSYNC -rtlvH --delete-after --delay-updates --safe-links rsync://rsync.armbian.com/dl "$DESTPATH/dl"
+    $RSYNC -rtlvH --delete-after --delay-updates --safe-links rsync://rsync.armbian.com/apt "$DESTPATH/apt"
 }
 
 if [ ! -e "$LOCKFILE" ]
