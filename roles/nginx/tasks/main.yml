@@ -4,6 +4,12 @@
     name: nginx
     state: present
 
+- name: Remove default debian vhost
+  file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+  notify: reload-nginx
+
 - name: Create mirror root directory
   file:
     path: /srv/mirror
@@ -20,7 +26,21 @@
     src: /etc/nginx/sites-available/mirror
     dest: /etc/nginx/sites-enabled/mirror
     state: link
-  notify: nginx-reload
+  notify: reload-nginx
+
+- name: Copy landing page http vhost
+  copy:
+    src: landing-page.conf
+    dest: /etc/nginx/sites-available/landing-page
+  when: landing_page is defined and landing_page == 'yes'
+
+- name: Symlink landing page http vhost
+  file:
+    src: /etc/nginx/sites-available/landing-page
+    dest: /etc/nginx/sites-enabled/landing-page
+    state: link
+  when: landing_page is defined and landing_page == 'yes'
+  notify: reload-nginx
 
 - name: Start nginx
   meta: flush_handlers
@@ -90,9 +110,4 @@
     src: style.css
     dest: /var/www/html/style.css
   when: landing_page is defined and landing_page == 'yes'
-
-- name: Remove default nginx site
-  file:
-    state: absent
-    path: /etc/nginx/sites-enabled/default
 
