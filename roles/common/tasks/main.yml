@@ -14,6 +14,7 @@
     - vim
     - rsync
     - certbot
+    - goaccess
 
 - name: Disable ssh password authentication
   lineinfile:
