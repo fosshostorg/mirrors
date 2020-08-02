@@ -1,12 +1,11 @@
 #!/bin/bash
 
-DESTPATH="/srv/mirror/armbian"
+DESTPATH="/srv/mirror/{{ item.name }}"
 RSYNC=/usr/bin/rsync
-LOCKFILE=/tmp/rsync-armbian.lock
+LOCKFILE=/tmp/rsync-{{ item.name | regex_replace('\/', '_') }}.lock
 
 synchronize() {
-    $RSYNC -rtlvH --delete-after --delay-updates --safe-links rsync://rsync.armbian.com/dl "$DESTPATH/dl"
-    $RSYNC -rtlvH --delete-after --delay-updates --safe-links rsync://rsync.armbian.com/apt "$DESTPATH/apt"
+    $RSYNC -rtlvH --delete-after --delay-updates --safe-links {{ item.source }} "$DESTPATH"
 }
 
 if [ ! -e "$LOCKFILE" ]

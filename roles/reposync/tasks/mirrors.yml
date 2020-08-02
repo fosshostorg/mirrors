@@ -1,0 +1,10 @@
+---
+mirrors:
+- name: armbian/apt
+  source: rsync://rsync.armbian.com/apt
+- name: armbian/dl
+  source: rsync://rsync.armbian.com/dl
+- name: manjaro
+  source: rsync://mirrorservice.org/repo.manjaro.org/repos/
+- name: ubuntudde
+  source: rsync://repo.ubuntudde.com/ubuntudde/
