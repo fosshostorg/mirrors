@@ -9,12 +9,15 @@
 - name: Install basic tools
   apt:
     pkg:
-    - unattended-upgrades
-    - htop
-    - vim
-    - rsync
+    - byobu
     - certbot
     - goaccess
+    - htop
+    - mosh
+    - ncdu
+    - rsync
+    - unattended-upgrades
+    - vim
 
 - name: Disable ssh password authentication
   lineinfile:
