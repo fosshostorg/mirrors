@@ -22,6 +22,18 @@
     mode: 0755
   with_items: "{{ mirrors }}"
 
+- name: Create hidden stats directory
+  file:
+    path: /srv/mirror/.stats
+    state: directory
+    mode: 0755
+
+- name: Install goaccess script
+  copy:
+    src: parse_logs.sh
+    dest: /var/mirror.d/parse_logs
+    mode: 0755
+
 - name: Add mirror cron entry
   cron:
     name: "sync mirrors"
