@@ -6,6 +6,10 @@ mirrors:
   source: rsync://rsync.armbian.com/dl
 - name: manjaro
   source: rsync://repo.manjaro.org/repos/
+- name: serpentos/downloads
+  source: rsync://download.serpentos.com/downloads
+- name: serpentos/repository
+  source: rsync://download.serpentos.com/repository
 - name: ubuntudde
   source: rsync://repo.ubuntudde.com/ubuntudde/
 - name: xiph
