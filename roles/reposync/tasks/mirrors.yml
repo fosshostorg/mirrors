@@ -4,6 +4,10 @@ mirrors:
   source: rsync://rsync.armbian.com/apt
 - name: armbian/dl
   source: rsync://rsync.armbian.com/dl
+- name: draugeros/apt
+  source: rsync://apt.draugeros.org/aptsync
+- name: draugeros/download
+  source: rsync://apt.draugeros.org/downloadsync
 - name: manjaro
   source: rsync://repo.manjaro.org/repos/
 - name: serpentos/downloads

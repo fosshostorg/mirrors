@@ -15,6 +15,7 @@
     - htop
     - mosh
     - ncdu
+    - psmisc
     - rsync
     - unattended-upgrades
     - vim
