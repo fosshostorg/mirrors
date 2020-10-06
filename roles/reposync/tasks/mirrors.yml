@@ -8,6 +8,8 @@ mirrors:
   source: rsync://apt.draugeros.org/aptsync
 - name: draugeros/download
   source: rsync://apt.draugeros.org/downloadsync
+- name: ipfire
+  source: rsync.ipfire.org::full
 - name: manjaro
   source: rsync://repo.manjaro.org/repos/
 - name: serpentos/downloads
