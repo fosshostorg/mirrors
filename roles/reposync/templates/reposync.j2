@@ -10,17 +10,17 @@ synchronize() {
 
 if [ ! -e "$LOCKFILE" ]
 then
-    echo $$ >"$LOCKFILE"
+    printf %s "$$" >"$LOCKFILE"
     synchronize
 else
     PID=$(cat "$LOCKFILE")
     if kill -0 "$PID" >&/dev/null
     then
-        echo "rsync - synchronization still running"
+        printf "rsync - synchronization for %s still running\n" "$DESTPATH"
         exit 0
     else
-        echo $$ >"$LOCKFILE"
-        echo "warning: previous synchronization appears not to have finished correctly"
+        printf %s "$$" >"$LOCKFILE"
+        printf "warning: previous synchronization for %s appears not to have finished correctly\n" "$DESTPATH"
         synchronize
     fi
 fi
