@@ -11,6 +11,7 @@
     pkg:
     - byobu
     - certbot
+    - git
     - goaccess
     - htop
     - mosh
