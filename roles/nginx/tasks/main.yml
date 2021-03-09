@@ -16,104 +16,23 @@
     state: directory
     mode: 0755
 
-- name: Template http vhosts
-  template:
-    src: mirror.conf.j2
+- name: Template http vhost
+  copy:
+    src: mirror.conf
     dest: /etc/nginx/sites-available/mirror
 
-- name: Symlink http vhosts
+- name: Symlink http vhost
   file:
     src: /etc/nginx/sites-available/mirror
     dest: /etc/nginx/sites-enabled/mirror
     state: link
   notify: reload-nginx
 
-- name: Copy landing page http vhost
-  copy:
-    src: landing-page.conf
-    dest: /etc/nginx/sites-available/landing-page
-  when: landing_page is defined and landing_page == 'yes'
-
-- name: Symlink landing page http vhost
-  file:
-    src: /etc/nginx/sites-available/landing-page
-    dest: /etc/nginx/sites-enabled/landing-page
-    state: link
-  when: landing_page is defined and landing_page == 'yes'
-  notify: reload-nginx
-
 - name: Start nginx
   meta: flush_handlers
-
-- name: Request TLS cert with certbot
-  command:
-    creates: /etc/letsencrypt/live/{{ inventory_hostname }}/fullchain.pem
-    cmd: certbot certonly --non-interactive --agree-tos --email admin@fosshost.org --webroot -w /srv/mirror -d {{ inventory_hostname }}
-
-- name: Request cert for landing page
-  command:
-    creates: /etc/letsencrypt/live/mirrors.fossho.st/fullchain.pem
-    cmd: certbot certonly --non-interactive --agree-tos --email admin@fosshost.org --webroot -w /var/www/html -d mirrors.fossho.st
-  when: landing_page is defined and landing_page == 'yes'
-
-- name: Configure nginx to be reloaded after cert renewal
-  lineinfile:
-    path: /etc/letsencrypt/cli.ini
-    regexp: '^deploy-hook = '
-    line: 'deploy-hook = systemctl reload nginx'
-
-- name: Enable certbot.timer
-  systemd:
-    name: certbot.timer
-    state: started
-    enabled: yes
-
-- name: Copy ssl.conf
-  copy:
-    src: ssl.conf
-    dest: /etc/nginx/snippets/ssl.conf
-  notify: reload-nginx
-
-- name: Template https vhost
-  template:
-    src: mirror-ssl.conf.j2
-    dest: /etc/nginx/sites-available/mirror-ssl
-
-- name: Symlink https vhost
-  file:
-    src: /etc/nginx/sites-available/mirror-ssl
-    dest: /etc/nginx/sites-enabled/mirror-ssl
-    state: link
-  notify: reload-nginx
-
-- name: Copy https vhost for landing page
-  copy:
-    src: landing-page-ssl.conf
-    dest: /etc/nginx/sites-available/mirrors.fossho.st-ssl
-  when: landing_page is defined and landing_page == 'yes'
-
-- name: Symlink https vhost for landing page
-  file:
-    src: /etc/nginx/sites-available/mirrors.fossho.st-ssl
-    dest: /etc/nginx/sites-enabled/mirrors.fossho.st-ssl
-    state: link
-  when: landing_page is defined and landing_page == 'yes'
-  notify: reload-nginx
 
 - name: Remove debian-packaged homepage
   file:
     state: absent
     path: /var/www/html/index.nginx-debian.html
-
-- name: Install mirror homepage html
-  template:
-    src: index.html.j2
-    dest: /var/www/html/index.html
-  when: landing_page is defined and landing_page == 'yes'
-
-- name: Install mirror homepage css
-  copy:
-    src: style.css
-    dest: /var/www/html/style.css
-  when: landing_page is defined and landing_page == 'yes'
 
