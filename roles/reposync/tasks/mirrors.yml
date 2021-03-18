@@ -10,6 +10,10 @@ mirrors:
   source: rsync://apt.draugeros.org/aptsync
 - name: draugeros/download
   source: rsync://apt.draugeros.org/downloadsync
+- name: garuda/repos
+  source: builds.garudalinux.org::chaotic
+- name: garuda/iso
+  source: builds.garudalinux.org::iso
 - name: ipfire
   source: rsync.ipfire.org::full
 - name: manjaro
