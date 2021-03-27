@@ -14,6 +14,8 @@ mirrors:
   source: builds.garudalinux.org::chaotic
 - name: garuda/iso
   source: builds.garudalinux.org::iso
+- name: heptapod
+  source: rsync://download.heptapod.net/fosshost-mirrored
 - name: ipfire
   source: rsync.ipfire.org::full
 - name: manjaro
