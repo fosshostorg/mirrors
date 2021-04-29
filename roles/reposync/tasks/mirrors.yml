@@ -18,6 +18,8 @@ mirrors:
   source: rsync://download.heptapod.net/fosshost-mirrored
 - name: ipfire
   source: rsync.ipfire.org::full
+- name: linuxguides-os
+  source: ams-01.rexum.space::files
 - name: manjaro
   source: rsync://repo.manjaro.org/repos/
 - name: serpentos/downloads
