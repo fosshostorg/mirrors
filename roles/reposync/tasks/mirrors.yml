@@ -2,8 +2,6 @@
 mirrors:
 - name: armbian/apt
   source: rsync://rsync.armbian.com/apt
-- name: armbian/dl
-  source: rsync://rsync.armbian.com/dl
 - name: blackarch
   source: rsync://blackarch.org/blackarch/
 - name: draugeros/apt

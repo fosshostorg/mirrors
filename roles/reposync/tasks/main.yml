@@ -22,24 +22,6 @@
     mode: 0755
   with_items: "{{ mirrors }}"
 
-# laxer-os repo
-- name: Clone laxer-os source repo
-  git:
-    repo: 'https://github.com/Laxer-os/laxer-repo'
-    dest: /srv/laxer
-
-- name: Symlink laxer into webroot
-  file:
-    src: /srv/laxer/x86_64
-    dest: /srv/mirror/laxer
-    state: link
-
-- name: Install laxer-os script
-  copy:
-    src: sync_laxer.sh
-    dest: /var/mirror.d/sync_laxer.sh
-    mode: 0755
-
 # add run-parts cron
 - name: Add mirror run-parts cron entry
   cron:
