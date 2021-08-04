@@ -9,9 +9,9 @@ mirrors:
 - name: draugeros/download
   source: rsync://apt.draugeros.org/downloadsync
 - name: garuda/repos
-  source: builds.garudalinux.org::chaotic
+  source: rsync://builds.garudalinux.org/chaotic/
 - name: garuda/iso
-  source: builds.garudalinux.org::iso
+  source: rsync://iso.builds.garudalinux.org/iso/
 - name: heptapod
   source: rsync://download.heptapod.net/fosshost-mirrored
 - name: ipfire
