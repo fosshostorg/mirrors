@@ -41,20 +41,13 @@
     mode: 0755
     owner: xiph
 
-- name: Set up rrsync script
-  copy:
-    src: /usr/share/doc/rsync/scripts/rrsync
-    dest: /usr/local/bin/rrsync
-    mode: 0755
-    remote_src: yes
-
 - name: Set up xiph ssh pubkey
   authorized_key:
     user: xiph
     state: present
     exclusive: True
     key: '{{ item }}'
-    key_options: 'restrict,command="/usr/local/bin/rrsync /srv/mirror/xiph"'
+    key_options: 'restrict,command="/usr/bin/rrsync /srv/mirror/xiph"'
   with_file:
     - xiph.pub
 
@@ -76,7 +69,7 @@
     state: present
     exclusive: True
     key: '{{ item }}'
-    key_options: 'restrict,command="/usr/local/bin/rrsync /srv/mirror/userrepository"'
+    key_options: 'restrict,command="/usr/bin/rrsync /srv/mirror/userrepository"'
   with_file:
     - userrepository.pub
 
