@@ -58,3 +58,25 @@
   with_file:
     - xiph.pub
 
+# userrepository mirror
+- name: Add userrepository user
+  user:
+    name: userrepository
+
+- name: Create userrepository sync dir
+  file:
+    path: /srv/mirror/userrepository
+    state: directory
+    mode: 0755
+    owner: userrepository
+
+- name: Set up userrepository ssh pubkey
+  authorized_key:
+    user: userrepository
+    state: present
+    exclusive: True
+    key: '{{ item }}'
+    key_options: 'restrict,command="/usr/local/bin/rrsync /srv/mirror/userrepository"'
+  with_file:
+    - userrepository.pub
+
