@@ -6,7 +6,7 @@ LOCKFILE=/tmp/rsync-{{ item.name | regex_replace('\/', '_') }}.lock
 
 synchronize() {
     printf "starting sync for {{ item.name }}\n"
-    $RSYNC -rtlvH --delete-after --delay-updates --safe-links {{ item.source }} "$DESTPATH"
+    $RSYNC -rtlvH --delete-during --delay-updates --safe-links {{ item.source }} "$DESTPATH"
 }
 
 if [ ! -e "$LOCKFILE" ]
