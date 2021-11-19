@@ -26,7 +26,7 @@
 - name: Add mirror run-parts cron entry
   cron:
     name: "sync mirrors"
-    hour: "*/4"
+    minute: "*/10"
     job: run-parts /var/mirror.d
 
 # xiph mirror
