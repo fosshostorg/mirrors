@@ -26,7 +26,7 @@
 - name: Add mirror run-parts cron entry
   cron:
     name: "sync mirrors"
-    hour: "*/4"
+    minute: "14"
     job: run-parts /var/mirror.d
 
 # xiph mirror
@@ -73,3 +73,24 @@
   with_file:
     - userrepository.pub
 
+# garuda mirror
+- name: Add garuda user
+  user:
+    name: garuda
+
+- name: Create garuda sync dir
+  file:
+    path: /srv/mirror/garuda
+    state: directory
+    mode: 0755
+    owner: garuda
+
+- name: Set up garuda ssh pubkey
+  authorized_key:
+    user: garuda
+    state: present
+    exclusive: True
+    key: '{{ item }}'
+    key_options: 'restrict,command="/usr/bin/rrsync /srv/mirror/garuda"'
+  with_file:
+    - garuda.pub
