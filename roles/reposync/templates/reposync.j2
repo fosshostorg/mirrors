@@ -6,7 +6,9 @@ LOCKFILE=/tmp/rsync-{{ item.name | regex_replace('\/', '_') }}.lock
 
 synchronize() {
     printf "starting sync for {{ item.name }}\n"
-    $RSYNC -rtlvH --delete-during --delay-updates --safe-links {{ item.source }} "$DESTPATH"
+    # Rsync's --chown does not set the owner of the directory itself
+    chown {{ item.owner | default('root') }} "$DESTPATH"
+    $RSYNC -rtlvoH --delete-during --delay-updates --safe-links --chown={{ item.owner | default('root') }} {{ item.source }} "$DESTPATH"
 }
 
 if [ ! -e "$LOCKFILE" ]
