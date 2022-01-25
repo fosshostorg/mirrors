@@ -32,3 +32,5 @@ mirrors:
   source: rsync://repo.ubuntudde.com/ubuntudde/
 - name: xiph
   source: rsync://ftp.osuosl.org/xiph/releases
+- name: fosshost/images
+  source: rsync://ais01.odg1.fossho.st/images/
