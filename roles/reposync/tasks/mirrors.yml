@@ -5,9 +5,9 @@ mirrors:
 - name: blackarch
   source: rsync://blackarch.org/blackarch/
 - name: draugeros/apt
-  source: rsync://apt.draugeros.org/aptsync
+  source: rsync://rsync.draugeros.org/apt
 - name: draugeros/download
-  source: rsync://apt.draugeros.org/downloadsync
+  source: rsync://rsync.draugeros.org/download
 - name: garuda/repos
   source: rsync://builds.garudalinux.org/chaotic/
   owner: garuda
